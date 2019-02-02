@@ -45,7 +45,7 @@
 | sex      | char(2)  | NO   |     | NULL    |       |
 | age      | int(11)  | YES  |     | NULL    |       |
 | sdept    | char(10) | YES  |     | NULL    |       |
-| username | char(20) | NO   |     | NULL    |       |
+| username | char(20) | NO   | UNI | NULL    |       |
 | password | char(20) | YES  |     | NULL    |       |
 +----------+----------+------+-----+---------+-------+
 ```
