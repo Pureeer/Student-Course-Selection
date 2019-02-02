@@ -48,7 +48,7 @@ public class DBUtil {
         }
     }
 
-    public ResultSet excuteQuery(String sql) {
+    public ResultSet executeQuery(String sql) {
         if (getConn() == null) {
             return null;
         }

@@ -16,6 +16,7 @@ import com.student.AppConstants;
 import com.student.DAO;
 import com.student.base.BaseDAO;
 import com.student.dao.StudentDAO;
+import com.student.model.Student;
 
 /**
  * @Description: LoginView
@@ -116,10 +117,12 @@ public class LoginView extends JFrame {
                 }
             } else {
                 StudentDAO studentDAO = (StudentDAO) BaseDAO.getAbilityDAO(DAO.StudentDAO);
-                if (studentDAO.queryForLogin(username, password)) {
-                    System.out.println("Student Login Success.");
+                String sno = studentDAO.queryForLogin(username, password);
+                if (sno != null) {
+                    System.out.println("Student " + sno + " Login Success.");
                     dispose();
                     // TODO: Student Login
+                    new StudentView(new Student(sno));
                 } else {
                     userField.setBackground(Color.PINK);
                     passwordField.setBackground(Color.PINK);
