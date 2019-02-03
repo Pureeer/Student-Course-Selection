@@ -32,7 +32,7 @@ public class LoginView extends JFrame {
 
     public LoginView() {
         setResizable(false);
-        setTitle("用户登录");
+        setTitle(AppConstants.LOGIN_TITLE);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBounds(100, 100, 300, 200);
         contentPane = new JPanel();

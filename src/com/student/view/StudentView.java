@@ -21,7 +21,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JSplitPane;
 
 /**
  * @Description: Student Select Course View
@@ -33,19 +32,22 @@ public class StudentView extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private Student student;
-    private JTable infotable, coursetable;
+    private JTable infotable, coursetable, scoretable;
     private static String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
             AppConstants.AGE, AppConstants.SDEPT};
-    private static String[] coursecolumn =
-            {AppConstants.CNO, AppConstants.CNAME, AppConstants.CREDT, AppConstants.TNAME};
+    private static String[] coursecolumn = {AppConstants.CNO, AppConstants.CNAME,
+            AppConstants.CREDIT, AppConstants.CDEPT, AppConstants.TNAME};
+    private static String[] scorecolumn =
+            {AppConstants.CNO, AppConstants.CNAME, AppConstants.SCORE};
     private JTextField textField;
+
     // TODO: Other Table Column
 
     public StudentView(Student student) {
         this.student = student;
         setResizable(false);
         setTitle(AppConstants.STUDENT_TITLE);
-        setBounds(100, 100, 800, 600);
+        setBounds(100, 100, 800, 400);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
 
@@ -55,6 +57,8 @@ public class StudentView extends JFrame {
                 new LoginView();
             }
         });
+
+        setVisible(true);
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout());
@@ -70,6 +74,8 @@ public class StudentView extends JFrame {
         JButton closebtn = new JButton(AppConstants.STUDENT_CLOSE);
         closebtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        selectbtn.addActionListener(new SelectListener());
+        dropbtn.addActionListener(new DropListener());
         closebtn.addActionListener(new ActionListener() {
 
             @Override
@@ -93,25 +99,19 @@ public class StudentView extends JFrame {
 
         initInfo(centerpanel);
         initCourse(centerpanel);
-
-        // TODO: Other Table
-        JPanel scorepanel = new JPanel();
-        centerpanel.add(scorepanel);
-
-        JPanel selectedpanel = new JPanel();
-        centerpanel.add(selectedpanel);
-
-        setVisible(true);
+        initScore(centerpanel);
+        initSelect(centerpanel);
     }
 
-
     private void initInfo(JPanel centerpanel) {
-        JPanel infopanel = new JPanel();
-        centerpanel.add(infopanel);
-        infopanel.setLayout(new BorderLayout());
-        JPanel infolabelpanel = new JPanel();
-        infopanel.add(infolabelpanel, BorderLayout.NORTH);
-        infolabelpanel.add(new JLabel(AppConstants.STUDENT_INFO));
+        System.err.println("Loading Student Info...");
+        JPanel panel = new JPanel();
+        centerpanel.add(panel);
+        panel.setLayout(new BorderLayout());
+
+        JPanel label = new JPanel();
+        panel.add(label, BorderLayout.NORTH);
+        label.add(new JLabel(AppConstants.STUDENT_INFO));
 
         infotable = new JTable();
         infotable.setEnabled(false);
@@ -130,49 +130,96 @@ public class StudentView extends JFrame {
         student.setUsername(result[0][5]);
 
         initTable(infotable, result, infocolumn);
-        JScrollPane infotablepanel = new JScrollPane(infotable);
+        JScrollPane scrollpane = new JScrollPane(infotable);
         infotable.getTableHeader().setReorderingAllowed(false);
-        infopanel.add(infotablepanel, BorderLayout.CENTER);
+        panel.add(scrollpane, BorderLayout.CENTER);
     }
 
     private void initCourse(JPanel centerpanel) {
-        JPanel coursepanel = new JPanel();
-        centerpanel.add(coursepanel);
-        coursepanel.setLayout(new BorderLayout());
+        System.err.println("Loading Course Info...");
+        JPanel panel = new JPanel();
+        centerpanel.add(panel);
+        panel.setLayout(new BorderLayout());
 
         JPanel mainpanel = new JPanel();
-        coursepanel.add(mainpanel, BorderLayout.CENTER);
+        panel.add(mainpanel, BorderLayout.CENTER);
         mainpanel.setLayout(new BorderLayout());
 
-        JPanel mainlabelpanel = new JPanel();
-        mainpanel.add(mainlabelpanel, BorderLayout.NORTH);
+        JPanel label = new JPanel();
+        mainpanel.add(label, BorderLayout.NORTH);
 
         JLabel courselabel = new JLabel(AppConstants.STUDENT_COURSE);
-        mainlabelpanel.add(courselabel);
+        label.add(courselabel);
 
         coursetable = new JTable();
         coursetable.setEnabled(false);
 
-        // TODO: The query.
-        String[][] result = null;
-        
+        String[][] result = StudentDAO.getInstance().queryCourses(student.getSno());
+
         initTable(coursetable, result, coursecolumn);
         JScrollPane scrollPane = new JScrollPane(coursetable);
-        infotable.getTableHeader().setReorderingAllowed(false);
+        coursetable.getTableHeader().setReorderingAllowed(false);
         mainpanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel inputpanel = new JPanel();
-        coursepanel.add(inputpanel, BorderLayout.SOUTH);
-        
-        inputpanel.add( new JLabel(AppConstants.STUDENT_INPUT));
+        panel.add(inputpanel, BorderLayout.SOUTH);
+
+        inputpanel.add(new JLabel(AppConstants.STUDENT_INPUT));
         textField = new JTextField();
         inputpanel.add(textField);
         textField.setColumns(10);
+    }
 
+
+    private void initScore(JPanel centerpanel) {
+        System.err.println("Loading Score Info...");
+        JPanel panel = new JPanel();
+        centerpanel.add(panel);
+        panel.setLayout(new BorderLayout());
+
+        JPanel label = new JPanel();
+        panel.add(label, BorderLayout.NORTH);
+        label.add(new JLabel(AppConstants.STUDENT_SCORE));
+
+        scoretable = new JTable();
+        scoretable.setEnabled(false);
+        String[][] result = StudentDAO.getInstance().queryStuGrade(student.getSno());
+
+        initTable(scoretable, result, scorecolumn);
+        JScrollPane scrollpane = new JScrollPane(scoretable);
+        scoretable.getTableHeader().setReorderingAllowed(false);
+        panel.add(scrollpane);
+
+    }
+
+    private void initSelect(JPanel centerpanel) {
+        JPanel selectedpanel = new JPanel();
+        centerpanel.add(selectedpanel);
+
+        // TODO: Select Courses.
     }
 
     private void initTable(JTable jTable, String[][] result, String[] column) {
         jTable.setModel(new DefaultTableModel(result, column));
         jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
+
+    private class SelectListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+
+        }
+    }
+
+    private class DropListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+
+        }
+    }
+
 }

@@ -19,18 +19,18 @@ public abstract class BaseDAO {
 
     public static synchronized BaseDAO getAbilityDAO(DAO dao) {
         switch (dao) {
-        case AdminDAO:
-            if (baseDAO == null || baseDAO.getClass() != AdminDAO.class) {
-                baseDAO = AdminDAO.getInstance();
-            }
-            break;
-        case StudentDAO:
-            if (baseDAO == null || baseDAO.getClass() != StudentDAO.class) {
-                baseDAO = StudentDAO.getInstance();
-            }
-            break;
-        default:
-            break;
+            case AdminDAO:
+                if (baseDAO == null || baseDAO.getClass() != AdminDAO.class) {
+                    baseDAO = AdminDAO.getInstance();
+                }
+                break;
+            case StudentDAO:
+                if (baseDAO == null || baseDAO.getClass() != StudentDAO.class) {
+                    baseDAO = StudentDAO.getInstance();
+                }
+                break;
+            default:
+                break;
         }
         return baseDAO;
     }
@@ -62,8 +62,9 @@ public abstract class BaseDAO {
         int columcount = 0;
         try {
             columcount = rs.getMetaData().getColumnCount();
-            String[] data = new String[columcount];
+            String[] data;
             while (rs.next()) {
+                data = new String[columcount];
                 for (int i = 0; i < columcount; i++) {
                     data[i] = rs.getString(i + 1);
                 }
@@ -77,48 +78,46 @@ public abstract class BaseDAO {
 
     /**
      *
-     * @Description: queryStudent query a student by "sno".
+     * @Description: queryStudent query a student by sno.
      */
     public String[][] queryStudent(String sno) {
         String sql = "select * from student where sno=?";
-        String[] param = { sno };
+        String[] param = {sno};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
 
-    /*
-     * query a course by cno.
+    /**
+     * 
+     * @Description: query a course by cno.
      */
     public String[][] queryCourseByCNO(String cno) {
         String sql = "select * from course where cno=?";
-        String[] param = { cno };
+        String[] param = {cno};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
 
-    /*
-     * query the grade of a specific student.
+    /**
+     * 
+     * @Description: query the grade of a specific student.
      */
     public String[][] queryStuGrade(String sno) {
-        String sql = "select cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=?";
-        String[] param = { sno };
+        String sql =
+                "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=?";
+        String[] param = {sno};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
 
-    /*
-     * query optional courses.
-     */
-    public String[][] queryOptionalCourses(String sno) {
-        // I don't know the rules
-    }
-
-    /*
-     * query students who have selected a specific course "Grade Manager Window"
+    /**
+     * 
+     * @Description: query students who have selected a specific course "Grade Manager Window"
      */
     public String[][] queryStuWhoSeleCou(String cname) {
-        String sql = "select sno,grade from course as A, stu_course as B where A.cno = B.cno and A.cname=?";
-        String[] param = { cname };
+        String sql =
+                "select sno,grade from course as A, stu_course as B where A.cno = B.cno and A.cname=?";
+        String[] param = {cname};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }

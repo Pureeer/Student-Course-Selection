@@ -32,7 +32,12 @@
 > - 登录界面
 > - LoginListener
 >       - 监听登录事件
-
+> StudentView.java
+> - 学生选课界面
+> - SelectListener
+>   - 监听选课事件
+> - DropListener
+>   - 监听退课事件
 
 ##  数据库结构
 ### student 表
@@ -51,17 +56,25 @@
 ```
 
 ### course 表
-> 尚未建立
+```
++--------+----------+------+-----+---------+-------+
+| Field  | Type     | Null | Key | Default | Extra |
++--------+----------+------+-----+---------+-------+
+| cno    | char(4)  | NO   | PRI | NULL    |       |
+| cname  | char(20) | NO   |     | NULL    |       |
+| credit | int(11)  | NO   |     | NULL    |       |
+| cdept  | char(10) | YES  |     | NULL    |       |
+| tname  | char(8)  | NO   |     | NULL    |       |
++--------+----------+------+-----+---------+-------+
+```
 
-- cno
-- cname
-- credit
-- cdept
-- tname
-
-### student-course 表
-> 尚未建立
-
-- sno
-- cno
-- grade
+### stu_course 表
+```
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| sno   | char(4) | NO   | PRI | NULL    |       |
+| cno   | char(4) | NO   | PRI | NULL    |       |
+| grade | int(11) | NO   |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+```
