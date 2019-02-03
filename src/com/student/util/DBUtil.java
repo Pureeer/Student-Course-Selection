@@ -16,18 +16,18 @@ import com.student.AppConstants;
 public class DBUtil {
 
     private static DBUtil db;
-    
+
     private Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;
-    
+
     public static DBUtil getDBUtil() {
         if (db == null) {
             db = new DBUtil();
         }
         return db;
     }
-    
+
     private DBUtil() {
 
     }
@@ -60,7 +60,7 @@ public class DBUtil {
         }
         return rs;
     }
-    
+
     public ResultSet executeQuery(String sql, Object[] obj) {
         if (getConn() == null) {
             return null;
@@ -77,7 +77,7 @@ public class DBUtil {
 
         return rs;
     }
-    
+
     public int executeUpdate(String sql) {
         int result = -1;
         if (getConn() == null) {
