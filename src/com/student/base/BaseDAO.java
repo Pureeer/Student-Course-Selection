@@ -7,14 +7,15 @@ import com.student.dao.AdminDAO;
 import com.student.dao.StudentDAO;
 import com.student.util.DBUtil;
 
-/** 
+/**
  * @Description: Data Access Base Object
  * @ClassName: BaseDAO
- *  
+ * 
  */
 public abstract class BaseDAO {
-    
+
     private static BaseDAO baseDAO;
+
     public static synchronized BaseDAO getAbilityDAO(DAO dao) {
         switch (dao) {
             case AdminDAO:
@@ -32,14 +33,15 @@ public abstract class BaseDAO {
         }
         return baseDAO;
     }
+
     protected final DBUtil db = DBUtil.getDBUtil();
-    
+
     protected ResultSet rs;
-    
+
     public BaseDAO() {
-        
+
     }
-    
+
     protected void destory() {
         try {
             if (rs != null) {

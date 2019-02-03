@@ -37,11 +37,10 @@ public class StudentDAO extends BaseDAO {
         return result;
     }
     // TODO: Data Access of Student.
-    
-    /** 
+
+    /**
      *
-     * @Description: queryStudent
-     * query a student by "sno".
+     * @Description: queryStudent query a student by "sno".
      */
     public String[][] queryStudent(String sno) {
         String sql = "select * from student where sno=?";
@@ -49,27 +48,26 @@ public class StudentDAO extends BaseDAO {
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
-    
-    /** 
-    *
-    * @Description: buildResult
-    * build the query result to array.
-    */
-   private String[][] buildResult() {
-       Vector<String[]> table = new Vector<String[]>(); 
-       int columcount = 0;
-       try {
-           columcount = rs.getMetaData().getColumnCount();
-           String[] data = new String[columcount];
-           while (rs.next()) {
-               for (int i = 0; i < columcount; i++) {
-                   data[i] = rs.getString(i + 1);
-               }
-               table.add(data);
-           }
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-       return table.toArray(new String[table.size()][columcount]);
-   }
+
+    /**
+     *
+     * @Description: buildResult build the query result to array.
+     */
+    private String[][] buildResult() {
+        Vector<String[]> table = new Vector<String[]>();
+        int columcount = 0;
+        try {
+            columcount = rs.getMetaData().getColumnCount();
+            String[] data = new String[columcount];
+            while (rs.next()) {
+                for (int i = 0; i < columcount; i++) {
+                    data[i] = rs.getString(i + 1);
+                }
+                table.add(data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return table.toArray(new String[table.size()][columcount]);
+    }
 }

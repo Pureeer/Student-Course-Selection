@@ -1,10 +1,10 @@
 import com.student.util.DBUtil;
 import com.student.view.LoginView;
 
-/** 
+/**
  * @Description: Main
  * @ClassName: Main
- *  
+ * 
  */
 public class Main {
 

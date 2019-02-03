@@ -28,11 +28,18 @@ public class AppConstants {
     public static final String STUDENT_SELECT = "选课";
     public static final String STUDENT_DROP = "退课";
     public static final String STUDENT_CLOSE = "关闭";
-    
+
     public static final String STUDENT_INFO = "学生详细信息";
     public static final String SNO = "学号";
     public static final String SNAME = "姓名";
     public static final String SEX = "性别";
     public static final String AGE = "年龄";
     public static final String SDEPT = "所在院系";
+    
+    public static final String STUDENT_COURSE = "可选课程";
+    public static final String CNO = "课程号";
+    public static final String CNAME = "课程名";
+    public static final String CREDT = "学分";
+    public static final String TNAME = "任课老师";
+    public static final String STUDENT_INPUT = "请输入课程号";
 }

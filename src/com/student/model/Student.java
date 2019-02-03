@@ -19,7 +19,7 @@ public class Student {
     public Student(String sno) {
         this.sno = sno;
     }
-    
+
     public String getSno() {
         return sno;
     }
