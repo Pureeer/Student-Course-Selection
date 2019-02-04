@@ -72,6 +72,8 @@ public abstract class BaseDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            destory();
         }
         return table.toArray(new String[table.size()][columcount]);
     }
@@ -91,7 +93,7 @@ public abstract class BaseDAO {
      * 
      * @Description: query a course by cno.
      */
-    public String[][] queryCourseByCNO(String cno) {
+    public String[][] queryCourse(String cno) {
         String sql = "select * from course where cno=?";
         String[] param = {cno};
         rs = db.executeQuery(sql, param);
@@ -104,20 +106,8 @@ public abstract class BaseDAO {
      */
     public String[][] queryStuGrade(String sno) {
         String sql =
-                "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=?";
+                "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=? and grade is not null";
         String[] param = {sno};
-        rs = db.executeQuery(sql, param);
-        return buildResult();
-    }
-
-    /**
-     * 
-     * @Description: query students who have selected a specific course "Grade Manager Window"
-     */
-    public String[][] queryStuWhoSeleCou(String cname) {
-        String sql =
-                "select sno,grade from course as A, stu_course as B where A.cno = B.cno and A.cname=?";
-        String[] param = {cname};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }

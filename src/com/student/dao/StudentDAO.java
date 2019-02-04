@@ -48,4 +48,78 @@ public class StudentDAO extends BaseDAO {
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
+
+    /**
+     * 
+     * @Description: query selected courses for a student.
+     */
+    public String[][] querySelectedCourse(String sno) {
+        String sql =
+                "select * from course where cno in (select cno from stu_course where sno=? and grade is null)";
+        String[] param = {sno};
+        rs = db.executeQuery(sql, param);
+        return buildResult();
+    }
+
+    /**
+     * 
+     * @Description: query if the student selected the course.
+     */
+    public boolean queryIfSelected(String sno, String cno) {
+        String sql = "select * from stu_course where sno=? and cno=?";
+        String[] param = {sno, cno};
+        rs = db.executeQuery(sql, param);
+        boolean result = false;
+        try {
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            destory();
+        }
+        return result;
+    }
+
+    /**
+     * 
+     * @Description: query if the student selected the course and have been graded.
+     */
+    public boolean queryIfGraded(String sno, String cno) {
+        String sql = "select * from stu_course where sno=? and cno=? and grade is not null";
+        String[] param = {sno, cno};
+        rs = db.executeQuery(sql, param);
+        boolean result = false;
+        try {
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            destory();
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @Description: select course for a student.
+     */
+    public void selectCourse(String sno, String cno) {
+        String sql = "insert into stu_course values (?,?,null)";
+        String[] param = {sno, cno};
+        db.executeUpdate(sql, param);
+    }
+
+    /**
+     *
+     * @Description: drop course for a student.
+     */
+    public void dropCourse(String sno, String cno) {
+        String sql = "delete from stu_course where sno=? and cno=?";
+        String[] param = {sno, cno};
+        db.executeUpdate(sql, param);
+    }
 }

@@ -33,20 +33,24 @@ public class AppConstants {
     public static final String STUDENT_INFO = "学生详细信息";
     public static final String STUDENT_COURSE = "可选课程";
     public static final String STUDENT_SCORE = "已修课程成绩";
+    public static final String STUDENT_SELECTED = "已选课程";
 
     public static final String SNO = "学号";
     public static final String SNAME = "姓名";
     public static final String SEX = "性别";
     public static final String AGE = "年龄";
     public static final String SDEPT = "所在院系";
-    
+
     public static final String CNO = "课程号";
     public static final String CNAME = "课程名";
     public static final String CREDIT = "学分";
     public static final String CDEPT = "开课院系";
     public static final String TNAME = "任课老师";
-    
+
     public static final String SCORE = "成绩";
 
-
+    public static final String CNO_NULL_ERROR = "请输入课程号";
+    public static final String CNO_NOT_EXIST_ERROR = "课程号不存在";
+    public static final String CNO_SELECTED_ERROR = "此课程已选";
+    public static final String CNO_SCORED_ERROR = "此课程已登分";
 }

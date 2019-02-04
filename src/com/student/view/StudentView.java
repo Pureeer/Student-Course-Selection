@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
@@ -32,7 +33,7 @@ public class StudentView extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private Student student;
-    private JTable infotable, coursetable, scoretable;
+    private JTable infotable, coursetable, scoretable, selectedtable;
     private static String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
             AppConstants.AGE, AppConstants.SDEPT};
     private static String[] coursecolumn = {AppConstants.CNO, AppConstants.CNAME,
@@ -41,7 +42,6 @@ public class StudentView extends JFrame {
             {AppConstants.CNO, AppConstants.CNAME, AppConstants.SCORE};
     private JTextField textField;
 
-    // TODO: Other Table Column
 
     public StudentView(Student student) {
         this.student = student;
@@ -101,6 +101,7 @@ public class StudentView extends JFrame {
         initCourse(centerpanel);
         initScore(centerpanel);
         initSelect(centerpanel);
+        getRootPane().setDefaultButton(selectbtn);
     }
 
     private void initInfo(JPanel centerpanel) {
@@ -193,10 +194,23 @@ public class StudentView extends JFrame {
     }
 
     private void initSelect(JPanel centerpanel) {
-        JPanel selectedpanel = new JPanel();
-        centerpanel.add(selectedpanel);
+        System.err.println("Loading Selected Info...");
+        JPanel panel = new JPanel();
+        centerpanel.add(panel);
+        panel.setLayout(new BorderLayout());
 
-        // TODO: Select Courses.
+        JPanel label = new JPanel();
+        panel.add(label, BorderLayout.NORTH);
+        label.add(new JLabel(AppConstants.STUDENT_SELECTED));
+
+        selectedtable = new JTable();
+        selectedtable.setEnabled(false);
+        String[][] result = StudentDAO.getInstance().querySelectedCourse(student.getSno());
+
+        initTable(selectedtable, result, coursecolumn);
+        JScrollPane scrollpane = new JScrollPane(selectedtable);
+        selectedtable.getTableHeader().setReorderingAllowed(false);
+        panel.add(scrollpane);
     }
 
     private void initTable(JTable jTable, String[][] result, String[] column) {
@@ -208,18 +222,52 @@ public class StudentView extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-
+            String cno = textField.getText();
+            if (cno.equals("")) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NULL_ERROR);
+                return;
+            }
+            String[][] result = StudentDAO.getInstance().queryCourse(cno);
+            if (result.length == 0) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR);
+            } else if (StudentDAO.getInstance().queryIfSelected(student.getSno(), cno)) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR);
+            } else {
+                StudentDAO.getInstance().selectCourse(student.getSno(), cno);
+                updateTables();
+                System.out.println("Student " + student.getSno() + " selected course " + cno + ".");
+            }
         }
+
     }
 
     private class DropListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
+            String cno = textField.getText();
+            if (cno.equals("")) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NULL_ERROR);
+                return;
+            }
+            String[][] result = StudentDAO.getInstance().queryCourse(cno);
+            if (result.length == 0) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR);
+            } else if (StudentDAO.getInstance().queryIfGraded(student.getSno(), cno)) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_SCORED_ERROR);
+            } else {
+                StudentDAO.getInstance().dropCourse(student.getSno(), cno);
+                updateTables();
+                System.out.println("Student " + student.getSno() + " droped course " + cno + ".");
+            }
 
         }
     }
 
+    private void updateTables() {
+        initTable(coursetable, StudentDAO.getInstance().queryCourses(student.getSno()),
+                coursecolumn);
+        initTable(selectedtable, StudentDAO.getInstance().querySelectedCourse(student.getSno()),
+                coursecolumn);
+    }
 }
