@@ -52,5 +52,6 @@ public class AppConstants {
     public static final String CNO_NULL_ERROR = "请输入课程号";
     public static final String CNO_NOT_EXIST_ERROR = "课程号不存在";
     public static final String CNO_SELECTED_ERROR = "此课程已选";
-    public static final String CNO_SCORED_ERROR = "此课程已登分";
+    public static final String CNO_NOT_SELECTED_ERROR = "此课程未选";
+    public static final String CNO_GRADED_ERROR = "此课程已登分";
 }

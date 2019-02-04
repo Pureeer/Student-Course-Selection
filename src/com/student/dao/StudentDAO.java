@@ -37,6 +37,16 @@ public class StudentDAO extends BaseDAO {
     }
     // TODO: Data Access of Student.
 
+    public class CourseNotFoundException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+    }
+
+    public class CourseNotSelectException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+    }
+
     /**
      * 
      * @Description: query optional courses for a student.
@@ -63,44 +73,32 @@ public class StudentDAO extends BaseDAO {
 
     /**
      * 
-     * @Description: query if the student selected the course.
+     * @throws CourseNotFoundException
+     * @throws CourseNotSelectException
+     * @Description: query a student's grade of a course.
      */
-    public boolean queryIfSelected(String sno, String cno) {
-        String sql = "select * from stu_course where sno=? and cno=?";
+    public int queryCourseGrade(String sno, String cno)
+            throws CourseNotFoundException, CourseNotSelectException {
+        String[][] course = queryCourse(cno);
+        if (course.length == 0) {
+            throw new CourseNotFoundException();
+        }
+        String sql = "select grade from stu_course where sno=? and cno=?";
         String[] param = {sno, cno};
         rs = db.executeQuery(sql, param);
-        boolean result = false;
+        String grade = null;
         try {
             if (rs.next()) {
-                result = true;
+                grade = rs.getString("grade");
+            } else {
+                throw new CourseNotSelectException();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             destory();
         }
-        return result;
-    }
-
-    /**
-     * 
-     * @Description: query if the student selected the course and have been graded.
-     */
-    public boolean queryIfGraded(String sno, String cno) {
-        String sql = "select * from stu_course where sno=? and cno=? and grade is not null";
-        String[] param = {sno, cno};
-        rs = db.executeQuery(sql, param);
-        boolean result = false;
-        try {
-            if (rs.next()) {
-                result = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            destory();
-        }
-        return result;
+        return Integer.parseInt(grade);
     }
 
     /**

@@ -2,11 +2,11 @@ package com.student.base;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 import com.student.DAO;
 import com.student.dao.AdminDAO;
 import com.student.dao.StudentDAO;
 import com.student.util.DBUtil;
-import java.util.Vector;
 
 /**
  * @Description: Data Access Base Object
