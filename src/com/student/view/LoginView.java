@@ -36,7 +36,7 @@ public class LoginView extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(300, 200);
         setLocationRelativeTo(null);
-        
+
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new GridLayout(4, 1));
@@ -118,7 +118,9 @@ public class LoginView extends JFrame {
                 }
             } else {
                 StudentDAO studentDAO = (StudentDAO) BaseDAO.getAbilityDAO(DAO.StudentDAO);
-                String sno = studentDAO.queryForLogin(username, password);
+                System.out.println(username);
+                System.out.println(password);
+                String sno = studentDAO.queryForLogin(username, password + username);
                 if (sno != null) {
                     dispose();
                     new StudentView(new Student(sno));
