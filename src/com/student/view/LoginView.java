@@ -34,7 +34,9 @@ public class LoginView extends JFrame {
         setResizable(false);
         setTitle(AppConstants.LOGIN_TITLE);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 300, 200);
+        setSize(300, 200);
+        setLocationRelativeTo(null);
+        
         contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new GridLayout(4, 1));
@@ -107,9 +109,8 @@ public class LoginView extends JFrame {
 
             if (username.equals("admin")) {
                 if (password.equals("admin1234")) {
-                    System.out.println("Admin Login Success.");
                     dispose();
-                    // TODO: Admin Login
+                    new AdminView();
                 } else {
                     userField.setBackground(Color.PINK);
                     passwordField.setBackground(Color.PINK);
@@ -119,9 +120,7 @@ public class LoginView extends JFrame {
                 StudentDAO studentDAO = (StudentDAO) BaseDAO.getAbilityDAO(DAO.StudentDAO);
                 String sno = studentDAO.queryForLogin(username, password);
                 if (sno != null) {
-                    System.out.println("Student " + sno + " Login Success.");
                     dispose();
-                    // TODO: Student Login
                     new StudentView(new Student(sno));
                 } else {
                     userField.setBackground(Color.PINK);

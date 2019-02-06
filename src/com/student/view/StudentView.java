@@ -47,14 +47,18 @@ public class StudentView extends JFrame {
 
     public StudentView(Student student) {
         this.student = student;
+        System.out.println("Student " + student.getSno() + " Login Success.");
+        
         setResizable(false);
         setTitle(AppConstants.STUDENT_TITLE);
-        setBounds(100, 100, 800, 400);
+        setSize(800, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowClosing(WindowEvent e) {
+                System.out.println("Student " + student.getSno() + " Logout.");
                 dispose();
                 new LoginView();
             }
@@ -82,6 +86,7 @@ public class StudentView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Student " + student.getSno() + " Logout.");
                 dispose();
                 new LoginView();
 
