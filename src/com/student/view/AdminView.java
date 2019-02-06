@@ -47,12 +47,17 @@ public class AdminView extends JFrame {
     private Vector<Course> courses;
     private JLabel coursename, teachername;
     private JTable gradetable;
-    private static String[] infocolumn = {AppConstants.SNO, AppConstants.SCORE};
+    private static String[] infocolumn = { AppConstants.SNO, AppConstants.SCORE };
     private JButton querybtn;
+
+    public static void main(String[] args) {
+        AdminView test = new AdminView();
+
+    }
 
     public AdminView() {
         System.out.println("Admin Login Success.");
-        
+
         setResizable(false);
         setTitle(AppConstants.ADMIN_TITLE);
         setSize(450, 300);
@@ -118,7 +123,7 @@ public class AdminView extends JFrame {
         JMenuItem studentinfo = new JMenuItem(AppConstants.ADMIN_STUDENTINFO);
         studentinfo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
         maintain.add(studentinfo);
-        
+
         // TODO: Table maintain
     }
 
@@ -183,7 +188,6 @@ public class AdminView extends JFrame {
         JButton exitbtn = new JButton(AppConstants.ADMIN_CLOSE);
         exitbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
         panel.add(querybtn);
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
@@ -201,8 +205,7 @@ public class AdminView extends JFrame {
                 try {
                     coursename.setText(courses.get(index).getCname());
                     teachername.setText(courses.get(index).getTname());
-                    String[][] result =
-                            AdminDAO.getInstance().queryStuWhoSeleCou(courses.get(index).getCno());
+                    String[][] result = AdminDAO.getInstance().queryStuWhoSeleCou(courses.get(index).getCno());
                     initGradeTable(gradetable, result, infocolumn);
                     inputbtn.setEnabled(true);
                 } catch (ArrayIndexOutOfBoundsException e2) {
@@ -232,7 +235,7 @@ public class AdminView extends JFrame {
                 return column == 1;
             }
         });
-        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
 
     private class InputListener implements ActionListener {
@@ -251,7 +254,8 @@ public class AdminView extends JFrame {
                 System.out.println("Update students' grade");
                 update();
                 gradetable.setEnabled(false);
-                btn.setText(AppConstants.ADMIN_INPUT);;
+                btn.setText(AppConstants.ADMIN_INPUT);
+                ;
                 course.setEnabled(true);
                 querybtn.setEnabled(true);
             }
