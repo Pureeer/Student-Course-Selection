@@ -22,7 +22,7 @@ public class StudentDAO extends BaseDAO {
     public String queryForLogin(String username, String password) {
         String result = null;
         String sql = "select sno from student where binary username=? and binary password=?";
-        String[] param = {username, password};
+        String[] param = { username, getSHA256(password) };
         rs = db.executeQuery(sql, param);
         try {
             if (rs.next()) {
@@ -52,9 +52,8 @@ public class StudentDAO extends BaseDAO {
      * @Description: query optional courses for a student.
      */
     public String[][] queryCourses(String sno) {
-        String sql =
-                "select * from course where cno not in (select cno from stu_course where sno=?)";
-        String[] param = {sno};
+        String sql = "select * from course where cno not in (select cno from stu_course where sno=?)";
+        String[] param = { sno };
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -64,9 +63,8 @@ public class StudentDAO extends BaseDAO {
      * @Description: query selected courses for a student.
      */
     public String[][] querySelectedCourse(String sno) {
-        String sql =
-                "select * from course where cno in (select cno from stu_course where sno=? and grade is null)";
-        String[] param = {sno};
+        String sql = "select * from course where cno in (select cno from stu_course where sno=? and grade is null)";
+        String[] param = { sno };
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -77,14 +75,13 @@ public class StudentDAO extends BaseDAO {
      * @throws CourseNotSelectException
      * @Description: query a student's grade of a course.
      */
-    public int queryCourseGrade(String sno, String cno)
-            throws CourseNotFoundException, CourseNotSelectException {
+    public int queryCourseGrade(String sno, String cno) throws CourseNotFoundException, CourseNotSelectException {
         String[][] course = queryCourse(cno);
         if (course.length == 0) {
             throw new CourseNotFoundException();
         }
         String sql = "select grade from stu_course where sno=? and cno=?";
-        String[] param = {sno, cno};
+        String[] param = { sno, cno };
         rs = db.executeQuery(sql, param);
         String grade = null;
         try {
@@ -107,7 +104,7 @@ public class StudentDAO extends BaseDAO {
      */
     public void selectCourse(String sno, String cno) {
         String sql = "insert into stu_course values (?,?,null)";
-        String[] param = {sno, cno};
+        String[] param = { sno, cno };
         db.executeUpdate(sql, param);
     }
 
@@ -117,7 +114,7 @@ public class StudentDAO extends BaseDAO {
      */
     public void dropCourse(String sno, String cno) {
         String sql = "delete from stu_course where sno=? and cno=?";
-        String[] param = {sno, cno};
+        String[] param = { sno, cno };
         db.executeUpdate(sql, param);
     }
 }

@@ -7,6 +7,9 @@ import com.student.DAO;
 import com.student.dao.AdminDAO;
 import com.student.dao.StudentDAO;
 import com.student.util.DBUtil;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @Description: Data Access Base Object
@@ -19,18 +22,18 @@ public abstract class BaseDAO {
 
     public static synchronized BaseDAO getAbilityDAO(DAO dao) {
         switch (dao) {
-            case AdminDAO:
-                if (baseDAO == null || baseDAO.getClass() != AdminDAO.class) {
-                    baseDAO = AdminDAO.getInstance();
-                }
-                break;
-            case StudentDAO:
-                if (baseDAO == null || baseDAO.getClass() != StudentDAO.class) {
-                    baseDAO = StudentDAO.getInstance();
-                }
-                break;
-            default:
-                break;
+        case AdminDAO:
+            if (baseDAO == null || baseDAO.getClass() != AdminDAO.class) {
+                baseDAO = AdminDAO.getInstance();
+            }
+            break;
+        case StudentDAO:
+            if (baseDAO == null || baseDAO.getClass() != StudentDAO.class) {
+                baseDAO = StudentDAO.getInstance();
+            }
+            break;
+        default:
+            break;
         }
         return baseDAO;
     }
@@ -84,7 +87,7 @@ public abstract class BaseDAO {
      */
     public String[][] queryStudent(String sno) {
         String sql = "select * from student where sno=?";
-        String[] param = {sno};
+        String[] param = { sno };
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -95,7 +98,7 @@ public abstract class BaseDAO {
      */
     public String[][] queryCourse(String cno) {
         String sql = "select * from course where cno=?";
-        String[] param = {cno};
+        String[] param = { cno };
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -105,10 +108,42 @@ public abstract class BaseDAO {
      * @Description: query the grade of a specific student.
      */
     public String[][] queryStuGrade(String sno) {
-        String sql =
-                "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=? and grade is not null";
-        String[] param = {sno};
+        String sql = "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=? and grade is not null";
+        String[] param = { sno };
         rs = db.executeQuery(sql, param);
         return buildResult();
+    }
+
+    /*
+     * @Description: encrypt the password with SHA256
+     */
+    public String getSHA256(String password) {
+        MessageDigest md;
+        String ret = "";
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes("UTF-8"));
+            ret = byte2Hex(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /*
+     * @Description: byte to Hexadecimal
+     */
+    private String byte2Hex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        String tmp = null;
+        for (int i = 0; i < bytes.length; i++) {
+            tmp = Integer.toHexString(bytes[i] & 0xFF);
+            if (tmp.length() == 1)
+                sb.append("0");
+            sb.append(tmp);
+        }
+        return sb.toString();
     }
 }
