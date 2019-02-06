@@ -21,7 +21,7 @@ public class StudentDAO extends BaseDAO {
 
     public String queryForLogin(String username, String password) {
         String result = null;
-        String sql = "select sno from student where username=? and password=?";
+        String sql = "select sno from student where binary username=? and binary password=?";
         String[] param = {username, password};
         rs = db.executeQuery(sql, param);
         try {

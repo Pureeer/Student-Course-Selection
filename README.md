@@ -38,21 +38,25 @@
 >   - 监听选课事件
 > - DropListener
 >   - 监听退课事件
+> AdminView.java
+> - 管理员界面
+> - InputListener
+>   - 监听登分事件
 
 ##  数据库结构
 ### student 表
 ```
-+----------+----------+------+-----+---------+-------+
-| Field    | Type     | Null | Key | Default | Extra |
-+----------+----------+------+-----+---------+-------+
-| sno      | char(4)  | NO   | PRI | NULL    |       |
-| sname    | char(8)  | NO   |     | NULL    |       |
-| sex      | char(2)  | NO   |     | NULL    |       |
-| age      | int(11)  | YES  |     | NULL    |       |
-| sdept    | char(10) | YES  |     | NULL    |       |
-| username | char(20) | NO   | UNI | NULL    |       |
-| password | char(20) | YES  |     | NULL    |       |
-+----------+----------+------+-----+---------+-------+
++----------+-------------------+------+-----+---------+-------+
+| Field    | Type              | Null | Key | Default | Extra |
++----------+-------------------+------+-----+---------+-------+
+| sno      | char(4)           | NO   | PRI | NULL    |       |
+| sname    | char(8)           | NO   |     | NULL    |       |
+| sex      | enum('男','女')   | YES  |     | NULL    |       |
+| age      | int(11)           | YES  |     | NULL    |       |
+| sdept    | char(10)          | YES  |     | NULL    |       |
+| username | char(20)          | NO   | UNI | NULL    |       |
+| password | char(20)          | YES  |     | NULL    |       |
++----------+-------------------+------+-----+---------+-------+
 ```
 
 ### course 表
@@ -78,3 +82,11 @@
 | grade | int(11) | NO   |     | NULL    |       |
 +-------+---------+------+-----+---------+-------+
 ```
+
+## 注意事项
+- 测试学生账号
+    - 账号：demo
+    - 密码：test1234
+- 测试管理账号
+    - 账号：admin
+    - 密码：admin1234
