@@ -1,5 +1,6 @@
 package com.student.view;
 
+import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,6 +30,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.DefaultTableCellRenderer;
 import com.student.AppConstants;
 import com.student.dao.AdminDAO;
 import com.student.model.Course;
@@ -49,11 +51,6 @@ public class AdminView extends JFrame {
     private JTable gradetable;
     private static String[] infocolumn = { AppConstants.SNO, AppConstants.SCORE };
     private JButton querybtn;
-
-    public static void main(String[] args) {
-        AdminView test = new AdminView();
-
-    }
 
     public AdminView() {
         System.out.println("Admin Login Success.");
@@ -188,6 +185,9 @@ public class AdminView extends JFrame {
         JButton exitbtn = new JButton(AppConstants.ADMIN_CLOSE);
         exitbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        RedCellRenderer rcr = new RedCellRenderer();
+        gradetable.setDefaultRenderer(Object.class, rcr);
+
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
         panel.add(querybtn);
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
@@ -251,14 +251,32 @@ public class AdminView extends JFrame {
                 querybtn.setEnabled(false);
             } else {
                 save(gradetable);
+                if (!gradeCheck()) {
+                    btn.setSelected(true);
+                    return;
+                }
                 System.out.println("Update students' grade");
                 update();
                 gradetable.setEnabled(false);
                 btn.setText(AppConstants.ADMIN_INPUT);
-                ;
                 course.setEnabled(true);
                 querybtn.setEnabled(true);
             }
+        }
+
+        private boolean gradeCheck() {
+            int row = gradetable.getRowCount();
+            for (int i = 0; i < row; i++) {
+                String grade = (String) gradetable.getValueAt(i, 1);
+                try {
+                    int g = Integer.parseInt(grade);
+                    if (g < 0 || g > 100)
+                        return false;
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void save(JTable table) {
@@ -287,4 +305,32 @@ public class AdminView extends JFrame {
             }
         }
     }
+
+    /*
+     * @Description: when you text invalid content, the cell will be red.
+     */
+    public class RedCellRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+            Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            String grade = (String) table.getModel().getValueAt(row, 1);
+            if (column != 1) {
+                com.setBackground(Color.white);
+                return com;
+            }
+            try {
+                int g = Integer.parseInt(grade);
+                if (g < 0 || g > 100)
+                    com.setBackground(Color.RED);
+                else
+                    com.setBackground(Color.white);
+
+            } catch (NumberFormatException e) {
+                com.setBackground(Color.RED);
+            }
+            return com;
+        }
+    }
+
 }
