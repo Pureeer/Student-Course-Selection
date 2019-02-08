@@ -7,12 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.acl.Owner;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -56,11 +54,11 @@ public class CourseInfo extends JDialog {
         container.add(panel, BorderLayout.EAST);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JButton addBtn = new JButton(AppConstants.ADMIN_couresInfo_ADD);
+        JButton addBtn = new JButton(AppConstants.ADMIN_COURSEINFO_ADD);
         addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton delBtn = new JButton(AppConstants.ADMIN_couresInfo_delete);
+        JButton delBtn = new JButton(AppConstants.ADMIN_COURSEINFO_DEL);
         delBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton quitBtn = new JButton(AppConstants.ADMIN_couresInfo_quit);
+        JButton quitBtn = new JButton(AppConstants.ADMIN_COURSEINFO_QUIT);
         quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
@@ -116,7 +114,7 @@ public class CourseInfo extends JDialog {
         stuMess.setModel(new DefaultTableModel(result, infocolumn) {
             private static final long serialVersionUID = 1L;
         });
-        totCount.setText("记录总数:" + String.valueOf(stuMess.getRowCount()));
+        totCount.setText(AppConstants.TOTAL_COUNT + String.valueOf(stuMess.getRowCount()));
     }
 
     private class AddCourse extends JDialog {
@@ -124,7 +122,7 @@ public class CourseInfo extends JDialog {
         private JTextField[] tFields;
 
         public AddCourse(CourseInfo frame) {
-            super(frame, "添加课程", true);
+            super(frame, AppConstants.ADMIN_COURSEINFO_ADD, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
@@ -139,7 +137,7 @@ public class CourseInfo extends JDialog {
 
         public void initBtn() {
             JPanel panel = new JPanel();
-            JButton jb = new JButton("确认");
+            JButton jb = new JButton(AppConstants.VERIFY);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
 
@@ -180,7 +178,7 @@ public class CourseInfo extends JDialog {
         private JTextField tField;
 
         public DelCourse(CourseInfo frame) {
-            super(frame, "删除课程", true);
+            super(frame, AppConstants.ADMIN_COURSEINFO_DEL, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
@@ -195,7 +193,7 @@ public class CourseInfo extends JDialog {
 
         public void initBtn() {
             JPanel panel = new JPanel();
-            JButton jb = new JButton("删除");
+            JButton jb = new JButton(AppConstants.DELETE);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
 
@@ -214,7 +212,7 @@ public class CourseInfo extends JDialog {
             panel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
             JPanel panel2 = new JPanel();
             panel2.setLayout(new GridLayout(1, 2, 5, 5));
-            JLabel label = new JLabel("CNO");
+            JLabel label = new JLabel(AppConstants.CNO);
             tField = new JTextField(10);
             panel2.add(label, JLabel.CENTER_ALIGNMENT);
             panel2.add(tField, JLabel.LEFT_ALIGNMENT);

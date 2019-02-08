@@ -59,6 +59,7 @@ public class AppConstants {
 
     public static final String VERIFY = "确认";
     public static final String DELETE = "删除";
+    public static final String TOTAL_COUNT = "记录总数:";
     // Admin
     public static final String ADMIN_TITLE = "成绩管理";
     public static final String ADMIN_QUERY = "查询";
@@ -75,13 +76,12 @@ public class AppConstants {
     public static final String ADMIN_COURSEINFO = "课程信息";
     public static final String ADMIN_STUDENTINFO = "学生信息";
 
-    public static final String ADMIN_couresInfo_ADD = "新增";
-    public static final String ADMIN_couresInfo_save = "保存";
-    public static final String ADMIN_couresInfo_delete = "删除";
-    public static final String ADMIN_couresInfo_quit = "退出";
+    public static final String ADMIN_COURSEINFO_ADD = "新增课程";
+    public static final String ADMIN_COURSEINFO_DEL = "删除课程";
+    public static final String ADMIN_COURSEINFO_QUIT = "退出";
 
-    public static final String ADMIN_StudentInfo = "学生信息";
-    public static final String ADMIN_StudentInfo_add = "添加学生";
-    public static final String ADMIN_STUDENTINFO_DELETE = "删除学生";
+    public static final String ADMIN_SUTDENTINFO = "学生信息";
+    public static final String ADMIN_SUTDENTINFO_ADD = "添加学生";
+    public static final String ADMIN_SUTDENTINFO_DEL = "删除学生";
 
 }

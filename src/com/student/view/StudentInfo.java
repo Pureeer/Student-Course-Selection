@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,11 +32,11 @@ public class StudentInfo extends JDialog {
     private JLabel totCount;
 
     public StudentInfo(AdminView frame) {
-        super(frame, AppConstants.ADMIN_StudentInfo, true);
+        super(frame, AppConstants.ADMIN_SUTDENTINFO, true);
         setResizable(false);
         setLocationRelativeTo(null);
         setSize(450, 300);
-        setTitle(AppConstants.ADMIN_StudentInfo);
+        setTitle(AppConstants.ADMIN_SUTDENTINFO);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         container = new JPanel();
@@ -54,11 +53,11 @@ public class StudentInfo extends JDialog {
         container.add(panel, BorderLayout.EAST);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JButton addBtn = new JButton(AppConstants.ADMIN_couresInfo_ADD);
+        JButton addBtn = new JButton(AppConstants.ADMIN_SUTDENTINFO_ADD);
         addBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton delBtn = new JButton(AppConstants.ADMIN_couresInfo_delete);
+        JButton delBtn = new JButton(AppConstants.ADMIN_SUTDENTINFO_DEL);
         delBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton quitBtn = new JButton(AppConstants.ADMIN_couresInfo_quit);
+        JButton quitBtn = new JButton(AppConstants.EXIT);
         quitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
@@ -121,7 +120,7 @@ public class StudentInfo extends JDialog {
         private JTextField[] tFields;
 
         public AddStudent(StudentInfo frame) {
-            super(frame, AppConstants.ADMIN_StudentInfo_add, true);
+            super(frame, AppConstants.ADMIN_SUTDENTINFO_ADD, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
@@ -191,7 +190,7 @@ public class StudentInfo extends JDialog {
         private JTextField tField;
 
         public DelStudent(StudentInfo frame) {
-            super(frame, AppConstants.ADMIN_STUDENTINFO_DELETE, true);
+            super(frame, AppConstants.ADMIN_SUTDENTINFO_DEL, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
@@ -225,7 +224,7 @@ public class StudentInfo extends JDialog {
             panel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
             JPanel panel2 = new JPanel();
             panel2.setLayout(new GridLayout(1, 2, 5, 5));
-            JLabel label = new JLabel("SNO");
+            JLabel label = new JLabel(AppConstants.SNO);
             tField = new JTextField(10);
             panel2.add(label, JLabel.CENTER_ALIGNMENT);
             panel2.add(tField, JLabel.LEFT_ALIGNMENT);
