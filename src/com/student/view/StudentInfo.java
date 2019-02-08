@@ -1,14 +1,13 @@
 package com.student.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.acl.Owner;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,25 +20,24 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.JDialog;
+import java.util.regex.Pattern;
 
 import com.student.AppConstants;
 import com.student.dao.AdminDAO;
 
-public class CourseInfo extends JDialog {
+public class StudentInfo extends JDialog {
     private JPanel container;
     private JTable stuMess;
-    private static String[] infocolumn = { AppConstants.CNO, AppConstants.CNAME, AppConstants.CREDIT,
-            AppConstants.CDEPT, AppConstants.TNAME };
+    private static String[] infocolumn = { AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX, AppConstants.AGE,
+            AppConstants.SDEPT, AppConstants.USERNAME, AppConstants.PASSWORD };
     private JLabel totCount;
-    private AdminView frame;
 
-    public CourseInfo(AdminView frame) {
-        super(frame, AppConstants.ADMIN_COURSEINFO, true);
-        this.frame = frame;
+    public StudentInfo(AdminView frame) {
+        super(frame, AppConstants.ADMIN_StudentInfo, true);
         setResizable(false);
         setLocationRelativeTo(null);
         setSize(450, 300);
-        setTitle(AppConstants.ADMIN_COURSEINFO);
+        setTitle(AppConstants.ADMIN_StudentInfo);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         container = new JPanel();
@@ -74,7 +72,7 @@ public class CourseInfo extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCourse ac = new AddCourse(CourseInfo.this);
+                AddStudent ac = new AddStudent(StudentInfo.this);
                 ac.setVisible(true);
             }
         });
@@ -82,7 +80,7 @@ public class CourseInfo extends JDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                DelCourse dc = new DelCourse(CourseInfo.this);
+                DelStudent dc = new DelStudent(StudentInfo.this);
                 dc.setVisible(true);
             }
         });
@@ -91,7 +89,6 @@ public class CourseInfo extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                frame.genChoice();
             }
         });
     }
@@ -112,25 +109,25 @@ public class CourseInfo extends JDialog {
     }
 
     public void genTable() {
-        String[][] result = AdminDAO.getInstance().getAllCourse();
+        String[][] result = AdminDAO.getInstance().getAllStudents();
         stuMess.setModel(new DefaultTableModel(result, infocolumn) {
             private static final long serialVersionUID = 1L;
         });
         totCount.setText("记录总数:" + String.valueOf(stuMess.getRowCount()));
     }
 
-    private class AddCourse extends JDialog {
+    private class AddStudent extends JDialog {
         private JPanel contPanel;
         private JTextField[] tFields;
 
-        public AddCourse(CourseInfo frame) {
-            super(frame, "添加课程", true);
+        public AddStudent(StudentInfo frame) {
+            super(frame, AppConstants.ADMIN_StudentInfo_add, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
             setResizable(false);
             setLocationRelativeTo(null);
-            setSize(310, 260);
+            setSize(310, 330);
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
             initBtn();
@@ -139,19 +136,33 @@ public class CourseInfo extends JDialog {
 
         public void initBtn() {
             JPanel panel = new JPanel();
-            JButton jb = new JButton("确认");
+            JButton jb = new JButton(AppConstants.VERIFY);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
 
             jb.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String[] info = new String[5];
-                    for (int i = 0; i < 5; i++)
+                    String[] info = new String[7];
+                    for (int i = 0; i < 7; i++)
                         info[i] = tFields[i].getText();
-                    AdminDAO.getInstance().AddCourse(info);
+                    boolean isValid = true;
+                    if (Pattern.matches(AppConstants.REGEX_USERNAME, info[5]) == false) {
+                        tFields[5].setBackground(Color.PINK);
+                        isValid = false;
+                    } else
+                        tFields[5].setBackground(Color.WHITE);
+
+                    if (Pattern.matches(AppConstants.REGEX_PASSWORD, info[6]) == false) {
+                        tFields[6].setBackground(Color.PINK);
+                        isValid = false;
+                    } else
+                        tFields[6].setBackground(Color.WHITE);
+                    if (!isValid)
+                        return;
+                    AdminDAO.getInstance().AddStudent(info);
                     dispose();
-                    CourseInfo.this.genTable();
+                    StudentInfo.this.genTable();
                 }
             });
         }
@@ -159,10 +170,10 @@ public class CourseInfo extends JDialog {
         public void initTable() {
             JPanel panel = new JPanel();
             panel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
-            JPanel[] panels = new JPanel[5];
-            JLabel[] labels = new JLabel[5];
-            tFields = new JTextField[5];
-            for (int i = 0; i < 5; i++) {
+            JPanel[] panels = new JPanel[7];
+            JLabel[] labels = new JLabel[7];
+            tFields = new JTextField[7];
+            for (int i = 0; i < 7; i++) {
                 panels[i] = new JPanel();
                 panels[i].setLayout(new GridLayout(1, 2, 5, 5));
                 labels[i] = new JLabel(infocolumn[i]);
@@ -175,12 +186,12 @@ public class CourseInfo extends JDialog {
         }
     }
 
-    private class DelCourse extends JDialog {
+    private class DelStudent extends JDialog {
         private JPanel contPanel;
         private JTextField tField;
 
-        public DelCourse(CourseInfo frame) {
-            super(frame, "删除课程", true);
+        public DelStudent(StudentInfo frame) {
+            super(frame, AppConstants.ADMIN_STUDENTINFO_DELETE, true);
             contPanel = new JPanel();
             setContentPane(contPanel);
             setLayout(new BorderLayout(5, 5));
@@ -195,16 +206,16 @@ public class CourseInfo extends JDialog {
 
         public void initBtn() {
             JPanel panel = new JPanel();
-            JButton jb = new JButton("删除");
+            JButton jb = new JButton(AppConstants.DELETE);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
 
             jb.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    AdminDAO.getInstance().DelCourse(tField.getText());
+                    AdminDAO.getInstance().DelStudent(tField.getText());
                     dispose();
-                    CourseInfo.this.genTable();
+                    StudentInfo.this.genTable();
                 }
             });
         }
@@ -214,7 +225,7 @@ public class CourseInfo extends JDialog {
             panel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
             JPanel panel2 = new JPanel();
             panel2.setLayout(new GridLayout(1, 2, 5, 5));
-            JLabel label = new JLabel("CNO");
+            JLabel label = new JLabel("SNO");
             tField = new JTextField(10);
             panel2.add(label, JLabel.CENTER_ALIGNMENT);
             panel2.add(tField, JLabel.LEFT_ALIGNMENT);
@@ -223,6 +234,7 @@ public class CourseInfo extends JDialog {
         }
     }
     /*
-     * public static void main(String[] args) { new CourseInfo().setVisible(true); }
+     * public static void main(String[] args) { new StudentInfo().setVisible(true);
+     * }
      */
 }

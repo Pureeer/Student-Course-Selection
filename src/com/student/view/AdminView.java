@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -51,6 +52,7 @@ public class AdminView extends JFrame {
     private JTable gradetable;
     private static String[] infocolumn = { AppConstants.SNO, AppConstants.SCORE };
     private JButton querybtn;
+    private JPanel choosebox;
 
     public AdminView() {
         System.out.println("Admin Login Success.");
@@ -119,14 +121,21 @@ public class AdminView extends JFrame {
         courseinfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // CourseInfo cInfo = new CourseInfo(AdminView.this);
-                // cInfo.setVisible(true);
+                CourseInfo cInfo = new CourseInfo(AdminView.this);
+                cInfo.setVisible(true);
             }
         });
 
         JMenuItem studentinfo = new JMenuItem(AppConstants.ADMIN_STUDENTINFO);
         studentinfo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
         maintain.add(studentinfo);
+        studentinfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StudentInfo cInfo = new StudentInfo(AdminView.this);
+                cInfo.setVisible(true);
+            }
+        });
 
         // TODO: Table maintain
     }
@@ -139,13 +148,18 @@ public class AdminView extends JFrame {
 
         panel.add(new JLabel(AppConstants.ADMIN_CHOOSE), BorderLayout.NORTH);
 
-        JPanel choosebox = new JPanel();
+        choosebox = new JPanel();
         panel.add(choosebox);
 
         course = new JComboBox<>();
         course.setPreferredSize(new Dimension(100, 20));
         choosebox.add(course);
 
+        genChoice();
+    }
+
+    protected void genChoice() {
+        course.removeAllItems();
         String[][] result = AdminDAO.getInstance().getAllCourse();
         courses = new Vector<>();
 

@@ -36,6 +36,12 @@ public class AdminDAO extends BaseDAO {
         return buildResult();
     }
 
+    public String[][] getAllStudents() {
+        String sql = "select * from student";
+        rs = db.executeQuery(sql);
+        return buildResult();
+    }
+
     /**
      * 
      * @Description: update a student's grade.
@@ -53,7 +59,19 @@ public class AdminDAO extends BaseDAO {
 
     public void DelCourse(String cno) {
         String sql = "delete from course where cno = ?";
-        String[] pramrm = { cno };
-        db.executeUpdate(sql, pramrm);
+        String[] prarm = { cno };
+        db.executeUpdate(sql, prarm);
+    }
+
+    public void AddStudent(String[] prarm) {
+        String sql = "insert into student values(?,?,?,?,?,?,?)";
+        prarm[6] = getSHA256(prarm[5] + prarm[6]);
+        db.executeUpdate(sql, prarm);
+    }
+
+    public void DelStudent(String sno) {
+        String sql = "delete from student where sno = ?";
+        String[] prarm = { sno };
+        db.executeUpdate(sql, prarm);
     }
 }

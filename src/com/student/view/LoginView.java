@@ -94,11 +94,14 @@ public class LoginView extends JFrame {
             if (Pattern.matches(AppConstants.REGEX_USERNAME, username) == false) {
                 userField.setBackground(Color.PINK);
                 isValid = false;
-            }
+            } else
+                userField.setBackground(Color.WHITE);
+
             if (Pattern.matches(AppConstants.REGEX_PASSWORD, password) == false) {
                 passwordField.setBackground(Color.PINK);
                 isValid = false;
-            }
+            } else
+                passwordField.setBackground(Color.WHITE);
 
             if (isValid == false) {
                 return;

@@ -40,6 +40,8 @@ public class AppConstants {
     public static final String SEX = "性别";
     public static final String AGE = "年龄";
     public static final String SDEPT = "所在院系";
+    public static final String USERNAME = "用户名";
+    public static final String PASSWORD = "密码";
 
     public static final String CNO = "课程号";
     public static final String CNAME = "课程名";
@@ -55,6 +57,8 @@ public class AppConstants {
     public static final String CNO_NOT_SELECTED_ERROR = "此课程未选";
     public static final String CNO_GRADED_ERROR = "此课程已登分";
 
+    public static final String VERIFY = "确认";
+    public static final String DELETE = "删除";
     // Admin
     public static final String ADMIN_TITLE = "成绩管理";
     public static final String ADMIN_QUERY = "查询";
@@ -75,5 +79,9 @@ public class AppConstants {
     public static final String ADMIN_couresInfo_save = "保存";
     public static final String ADMIN_couresInfo_delete = "删除";
     public static final String ADMIN_couresInfo_quit = "退出";
+
+    public static final String ADMIN_StudentInfo = "学生信息";
+    public static final String ADMIN_StudentInfo_add = "添加学生";
+    public static final String ADMIN_STUDENTINFO_DELETE = "删除学生";
 
 }
