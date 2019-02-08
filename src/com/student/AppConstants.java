@@ -54,7 +54,7 @@ public class AppConstants {
     public static final String CNO_SELECTED_ERROR = "此课程已选";
     public static final String CNO_NOT_SELECTED_ERROR = "此课程未选";
     public static final String CNO_GRADED_ERROR = "此课程已登分";
-    
+
     // Admin
     public static final String ADMIN_TITLE = "成绩管理";
     public static final String ADMIN_QUERY = "查询";
@@ -63,12 +63,17 @@ public class AppConstants {
     public static final String ADMIN_CLOSE = "关闭";
     public static final String ADMIN_CHOOSE = "请选择课程名：";
     public static final String ADMIN_SELECTIONINFO = "选修此课程的学生：";
-    
+
     public static final String ADMIN_CNAME = "课程：";
     public static final String ADMIN_TNAME = "任课教师：";
-    
+
     public static final String ADMIN_MAINTAIN = "维护";
     public static final String ADMIN_COURSEINFO = "课程信息";
     public static final String ADMIN_STUDENTINFO = "学生信息";
-    
+
+    public static final String ADMIN_couresInfo_ADD = "新增";
+    public static final String ADMIN_couresInfo_save = "保存";
+    public static final String ADMIN_couresInfo_delete = "删除";
+    public static final String ADMIN_couresInfo_quit = "退出";
+
 }

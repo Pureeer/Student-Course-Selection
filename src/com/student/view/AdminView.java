@@ -116,6 +116,13 @@ public class AdminView extends JFrame {
         JMenuItem courseinfo = new JMenuItem(AppConstants.ADMIN_COURSEINFO);
         courseinfo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
         maintain.add(courseinfo);
+        courseinfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // CourseInfo cInfo = new CourseInfo(AdminView.this);
+                // cInfo.setVisible(true);
+            }
+        });
 
         JMenuItem studentinfo = new JMenuItem(AppConstants.ADMIN_STUDENTINFO);
         studentinfo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));
@@ -177,6 +184,9 @@ public class AdminView extends JFrame {
         contentPane.add(panel, BorderLayout.EAST);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        RedCellRenderer rcr = new RedCellRenderer();
+        gradetable.setDefaultRenderer(Object.class, rcr);
+
         querybtn = new JButton(AppConstants.ADMIN_QUERY);
         querybtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         JToggleButton inputbtn = new JToggleButton(AppConstants.ADMIN_INPUT);
@@ -184,9 +194,6 @@ public class AdminView extends JFrame {
         inputbtn.setEnabled(false);
         JButton exitbtn = new JButton(AppConstants.ADMIN_CLOSE);
         exitbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        RedCellRenderer rcr = new RedCellRenderer();
-        gradetable.setDefaultRenderer(Object.class, rcr);
 
         panel.add(Box.createRigidArea(new Dimension(100, 30)));
         panel.add(querybtn);

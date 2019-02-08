@@ -20,12 +20,12 @@ public class AdminDAO extends BaseDAO {
 
     /**
      * 
-     * @Description: query students who have selected a specific course "Grade Manager Window"
+     * @Description: query students who have selected a specific course "Grade
+     *               Manager Window"
      */
     public String[][] queryStuWhoSeleCou(String cno) {
-        String sql =
-                "select sno,grade from course as A, stu_course as B where A.cno=B.cno and A.cno=?";
-        String[] param = {cno};
+        String sql = "select sno,grade from course as A, stu_course as B where A.cno=B.cno and A.cno=?";
+        String[] param = { cno };
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -42,7 +42,18 @@ public class AdminDAO extends BaseDAO {
      */
     public int updateCourseGrade(String sno, String cno, String grade) {
         String sql = "update stu_course set grade=? where sno=? and cno=?";
-        String[] prarm = {grade, sno, cno};
+        String[] prarm = { grade, sno, cno };
         return db.executeUpdate(sql, prarm);
+    }
+
+    public void AddCourse(String[] prarm) {
+        String sql = "insert into course values(?, ? ,?, ? ,?)";
+        db.executeUpdate(sql, prarm);
+    }
+
+    public void DelCourse(String cno) {
+        String sql = "delete from course where cno = ?";
+        String[] pramrm = { cno };
+        db.executeUpdate(sql, pramrm);
     }
 }
