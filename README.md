@@ -23,6 +23,9 @@
 > Student.java
 > - 学生实体类
 
+> Course.java
+> - 课程实体类
+
 ### util
 > DBUtil.java
 > - 数据库连接查询工具集
@@ -31,17 +34,33 @@
 > LoginView.java
 > - 登录界面
 > - LoginListener
->       - 监听登录事件
+>   - 监听登录事件
+
 > StudentView.java
 > - 学生选课界面
 > - SelectListener
 >   - 监听选课事件
 > - DropListener
 >   - 监听退课事件
+
 > AdminView.java
 > - 管理员界面
 > - InputListener
 >   - 监听登分事件
+
+> StudentInfo.java
+> - 学生管理界面
+> - AddStudent
+>   - 添加课程子窗口
+> - DelStudent
+>   - 删除课程子窗口
+
+> CourseInfo.java
+> - 课程管理界面
+> - AddCourse
+>   - 添加课程子窗口
+> - DelCourse
+>   - 删除课程子窗口
 
 ##  数据库结构
 ### student 表
@@ -55,7 +74,7 @@
 | age      | int(11)           | YES  |     | NULL    |       |
 | sdept    | char(10)          | YES  |     | NULL    |       |
 | username | char(20)          | NO   | UNI | NULL    |       |
-| password | char(20)          | YES  |     | NULL    |       |
+| password | char(64)          | NO   |     | NULL    |       |
 +----------+-------------------+------+-----+---------+-------+
 ```
 
@@ -66,9 +85,9 @@
 +--------+----------+------+-----+---------+-------+
 | cno    | char(4)  | NO   | PRI | NULL    |       |
 | cname  | char(20) | NO   |     | NULL    |       |
-| credit | int(11)  | NO   |     | NULL    |       |
+| credit | int(11)  | YES  |     | 0       |       |
 | cdept  | char(10) | YES  |     | NULL    |       |
-| tname  | char(8)  | NO   |     | NULL    |       |
+| tname  | char(8)  | YES  |     | NULL    |       |
 +--------+----------+------+-----+---------+-------+
 ```
 
@@ -79,7 +98,7 @@
 +-------+---------+------+-----+---------+-------+
 | sno   | char(4) | NO   | PRI | NULL    |       |
 | cno   | char(4) | NO   | PRI | NULL    |       |
-| grade | int(11) | NO   |     | NULL    |       |
+| grade | int(11) | YES  |     | NULL    |       |
 +-------+---------+------+-----+---------+-------+
 ```
 
