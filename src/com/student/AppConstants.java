@@ -40,6 +40,8 @@ public class AppConstants {
     public static final String SEX = "性别";
     public static final String AGE = "年龄";
     public static final String SDEPT = "所在院系";
+    public static final String USERNAME = "用户名";
+    public static final String PASSWORD = "密码";
 
     public static final String CNO = "课程号";
     public static final String CNAME = "课程名";
@@ -54,7 +56,10 @@ public class AppConstants {
     public static final String CNO_SELECTED_ERROR = "此课程已选";
     public static final String CNO_NOT_SELECTED_ERROR = "此课程未选";
     public static final String CNO_GRADED_ERROR = "此课程已登分";
-    
+
+    public static final String VERIFY = "确认";
+    public static final String DELETE = "删除";
+    public static final String TOTAL_COUNT = "记录总数:";
     // Admin
     public static final String ADMIN_TITLE = "成绩管理";
     public static final String ADMIN_QUERY = "查询";
@@ -63,12 +68,20 @@ public class AppConstants {
     public static final String ADMIN_CLOSE = "关闭";
     public static final String ADMIN_CHOOSE = "请选择课程名：";
     public static final String ADMIN_SELECTIONINFO = "选修此课程的学生：";
-    
+
     public static final String ADMIN_CNAME = "课程：";
     public static final String ADMIN_TNAME = "任课教师：";
-    
+
     public static final String ADMIN_MAINTAIN = "维护";
     public static final String ADMIN_COURSEINFO = "课程信息";
     public static final String ADMIN_STUDENTINFO = "学生信息";
-    
+
+    public static final String ADMIN_COURSEINFO_ADD = "新增课程";
+    public static final String ADMIN_COURSEINFO_DEL = "删除课程";
+    public static final String ADMIN_COURSEINFO_QUIT = "退出";
+
+    public static final String ADMIN_SUTDENTINFO = "学生信息";
+    public static final String ADMIN_SUTDENTINFO_ADD = "添加学生";
+    public static final String ADMIN_SUTDENTINFO_DEL = "删除学生";
+
 }
