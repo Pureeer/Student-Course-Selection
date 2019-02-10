@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import com.student.AppConstants;
-import com.student.DAO;
-import com.student.base.BaseDAO;
 import com.student.dao.StudentDAO;
 import com.student.model.Student;
 
@@ -94,9 +92,9 @@ public class LoginView extends JFrame {
             if (Pattern.matches(AppConstants.REGEX_USERNAME, username) == false) {
                 userField.setBackground(Color.PINK);
                 isValid = false;
-            } else
+            } else {
                 userField.setBackground(Color.WHITE);
-
+            }
             if (Pattern.matches(AppConstants.REGEX_PASSWORD, password) == false) {
                 passwordField.setBackground(Color.PINK);
                 isValid = false;
@@ -120,10 +118,9 @@ public class LoginView extends JFrame {
                     JOptionPane.showMessageDialog(null, AppConstants.LOGIN_ERROR);
                 }
             } else {
-                StudentDAO studentDAO = (StudentDAO) BaseDAO.getAbilityDAO(DAO.StudentDAO);
                 System.out.println(username);
                 System.out.println(password);
-                String sno = studentDAO.queryForLogin(username, password + username);
+                String sno = StudentDAO.getInstance().queryForLogin(username, password + username);
                 if (sno != null) {
                     dispose();
                     new StudentView(new Student(sno));

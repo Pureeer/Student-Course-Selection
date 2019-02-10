@@ -1,7 +1,7 @@
 package com.student.view;
 
-import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,7 +15,6 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -28,10 +27,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
-import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.DefaultTableCellRenderer;
 import com.student.AppConstants;
 import com.student.dao.AdminDAO;
 import com.student.model.Course;
@@ -50,7 +48,7 @@ public class AdminView extends JFrame {
     private Vector<Course> courses;
     private JLabel coursename, teachername;
     private JTable gradetable;
-    private static String[] infocolumn = { AppConstants.SNO, AppConstants.SCORE };
+    private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SCORE};
     private JButton querybtn;
     private JPanel choosebox;
 
@@ -61,7 +59,7 @@ public class AdminView extends JFrame {
         setTitle(AppConstants.ADMIN_TITLE);
         setSize(450, 300);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
         menuBar = new JMenuBar();
@@ -100,7 +98,6 @@ public class AdminView extends JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 System.out.println("admin Logout.");
-                dispose();
                 new LoginView();
             }
         });
@@ -136,8 +133,6 @@ public class AdminView extends JFrame {
                 cInfo.setVisible(true);
             }
         });
-
-        // TODO: Table maintain
     }
 
     private void initChoose() {
@@ -160,13 +155,17 @@ public class AdminView extends JFrame {
 
     protected void genChoice() {
         course.removeAllItems();
-        String[][] result = AdminDAO.getInstance().getAllCourse();
+        String[][] result = AdminDAO.getInstance().getAllCourses();
         courses = new Vector<>();
 
         for (int i = 0; i < result.length; i++) {
             Course c = new Course(result[i][0]);
             c.setCname(result[i][1]);
-            c.setCredit(Integer.parseInt(result[i][2]));
+            try {                
+                c.setCredit(Integer.parseInt(result[i][2]));
+            } catch (NumberFormatException e) {
+                c.setCredit(0);
+            }
             c.setCdept(result[i][3]);
             c.setTname(result[i][4]);
             courses.add(c);
@@ -226,7 +225,8 @@ public class AdminView extends JFrame {
                 try {
                     coursename.setText(courses.get(index).getCname());
                     teachername.setText(courses.get(index).getTname());
-                    String[][] result = AdminDAO.getInstance().queryStuWhoSeleCou(courses.get(index).getCno());
+                    String[][] result =
+                            AdminDAO.getInstance().queryStuWhoSeleCou(courses.get(index).getCno());
                     initGradeTable(gradetable, result, infocolumn);
                     inputbtn.setEnabled(true);
                 } catch (ArrayIndexOutOfBoundsException e2) {
@@ -238,9 +238,7 @@ public class AdminView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("admin Logout.");
                 dispose();
-                new LoginView();
             }
         });
         getRootPane().setDefaultButton(querybtn);
@@ -289,6 +287,9 @@ public class AdminView extends JFrame {
             int row = gradetable.getRowCount();
             for (int i = 0; i < row; i++) {
                 String grade = (String) gradetable.getValueAt(i, 1);
+                if (grade == null || grade.equals("")) {
+                    continue;
+                }
                 try {
                     int g = Integer.parseInt(grade);
                     if (g < 0 || g > 100)
@@ -327,28 +328,38 @@ public class AdminView extends JFrame {
         }
     }
 
-    /*
+    /**
+     * 
      * @Description: when you text invalid content, the cell will be red.
      */
     public class RedCellRenderer extends DefaultTableCellRenderer {
+
+        private static final long serialVersionUID = 1L;
+
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                int row, int column) {
-            Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            Component com = super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                    row, column);
             String grade = (String) table.getModel().getValueAt(row, 1);
             if (column != 1) {
-                com.setBackground(Color.white);
+                com.setBackground(Color.WHITE);
                 return com;
             }
-            try {
-                int g = Integer.parseInt(grade);
-                if (g < 0 || g > 100)
-                    com.setBackground(Color.RED);
-                else
-                    com.setBackground(Color.white);
+            if (grade == null || grade.equals("")) {
+                com.setBackground(Color.WHITE);
+            } else {
+                try {
+                    
+                    int g = Integer.parseInt(grade);
+                    if (g < 0 || g > 100)
+                        com.setBackground(Color.PINK);
+                    else
+                        com.setBackground(Color.WHITE);
 
-            } catch (NumberFormatException e) {
-                com.setBackground(Color.RED);
+                } catch (NumberFormatException e) {
+                        com.setBackground(Color.PINK);
+                }                
             }
             return com;
         }

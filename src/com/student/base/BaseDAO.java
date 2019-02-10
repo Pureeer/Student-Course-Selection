@@ -1,15 +1,12 @@
 package com.student.base;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Vector;
-import com.student.DAO;
-import com.student.dao.AdminDAO;
-import com.student.dao.StudentDAO;
-import com.student.util.DBUtil;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import com.student.util.DBUtil;
 
 /**
  * @Description: Data Access Base Object
@@ -18,31 +15,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public abstract class BaseDAO {
 
-    private static BaseDAO baseDAO;
-
-    public static synchronized BaseDAO getAbilityDAO(DAO dao) {
-        switch (dao) {
-        case AdminDAO:
-            if (baseDAO == null || baseDAO.getClass() != AdminDAO.class) {
-                baseDAO = AdminDAO.getInstance();
-            }
-            break;
-        case StudentDAO:
-            if (baseDAO == null || baseDAO.getClass() != StudentDAO.class) {
-                baseDAO = StudentDAO.getInstance();
-            }
-            break;
-        default:
-            break;
-        }
-        return baseDAO;
-    }
-
     protected final DBUtil db = DBUtil.getDBUtil();
 
     protected ResultSet rs;
 
-    public BaseDAO() {
+    protected BaseDAO() {
 
     }
 
@@ -83,11 +60,11 @@ public abstract class BaseDAO {
 
     /**
      *
-     * @Description: queryStudent query a student by sno.
+     * @Description: query a student by sno.
      */
     public String[][] queryStudent(String sno) {
         String sql = "select * from student where sno=?";
-        String[] param = { sno };
+        String[] param = {sno};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
@@ -98,23 +75,13 @@ public abstract class BaseDAO {
      */
     public String[][] queryCourse(String cno) {
         String sql = "select * from course where cno=?";
-        String[] param = { cno };
+        String[] param = {cno};
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
 
     /**
      * 
-     * @Description: query the grade of a specific student.
-     */
-    public String[][] queryStuGrade(String sno) {
-        String sql = "select A.cno, cname, grade from course as A, stu_course as B where A.cno = B.cno and sno=? and grade is not null";
-        String[] param = { sno };
-        rs = db.executeQuery(sql, param);
-        return buildResult();
-    }
-
-    /*
      * @Description: encrypt the password with SHA256
      */
     public String getSHA256(String password) {
@@ -132,7 +99,8 @@ public abstract class BaseDAO {
         return ret;
     }
 
-    /*
+    /**
+     * 
      * @Description: byte to Hexadecimal
      */
     private String byte2Hex(byte[] bytes) {
@@ -145,5 +113,47 @@ public abstract class BaseDAO {
             sb.append(tmp);
         }
         return sb.toString();
+    }
+
+
+
+    public class StudentExistException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+    }
+
+    public class StudentNotFoundException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+    }
+
+    public class StudentSelectedCourseException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+    }
+
+    public class CourseExistException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+    }
+    
+    public class CourseSelectedException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+        
+    }
+
+    public class CourseNotFoundException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+    }
+
+    public class CourseNotSelectedException extends Exception {
+
+        private static final long serialVersionUID = 1L;
     }
 }

@@ -8,27 +8,32 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTextField;
-import javax.swing.JDialog;
-import java.util.regex.Pattern;
-
 import com.student.AppConstants;
+import com.student.base.BaseDAO.StudentExistException;
+import com.student.base.BaseDAO.StudentNotFoundException;
+import com.student.base.BaseDAO.StudentSelectedCourseException;
 import com.student.dao.AdminDAO;
 
 public class StudentInfo extends JDialog {
+
+    private static final long serialVersionUID = 1L;
     private JPanel container;
     private JTable stuMess;
-    private static String[] infocolumn = { AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX, AppConstants.AGE,
-            AppConstants.SDEPT, AppConstants.USERNAME, AppConstants.PASSWORD };
+    private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
+            AppConstants.AGE, AppConstants.SDEPT, AppConstants.USERNAME, AppConstants.PASSWORD};
     private JLabel totCount;
 
     public StudentInfo(AdminView frame) {
@@ -100,7 +105,7 @@ public class StudentInfo extends JDialog {
         totCount = new JLabel();
         panel.add(totCount, BorderLayout.NORTH);
         stuMess.setEnabled(false);
-
+        stuMess.getTableHeader().setReorderingAllowed(false);
         JScrollPane scrollPane = new JScrollPane(stuMess);
         scrollPane.setPreferredSize(new Dimension(300, 180));
         panel.add(scrollPane);
@@ -112,12 +117,18 @@ public class StudentInfo extends JDialog {
         stuMess.setModel(new DefaultTableModel(result, infocolumn) {
             private static final long serialVersionUID = 1L;
         });
-        totCount.setText("记录总数:" + String.valueOf(stuMess.getRowCount()));
+        totCount.setText(AppConstants.TOTAL_COUNT + String.valueOf(stuMess.getRowCount()));
     }
 
     private class AddStudent extends JDialog {
+
+        private static final long serialVersionUID = 1L;
         private JPanel contPanel;
         private JTextField[] tFields;
+        private final String[] checkregex = {AppConstants.REGEX_SNO, AppConstants.REGEX_SNAME,
+                AppConstants.REGEX_SEX, AppConstants.REGEX_AGE, AppConstants.REGEX_SDEPT,
+                AppConstants.REGEX_USERNAME, AppConstants.REGEX_PASSWORD};
+        private final boolean checknull[] = {false, false, true, true, true, false, false};
 
         public AddStudent(StudentInfo frame) {
             super(frame, AppConstants.ADMIN_SUTDENTINFO_ADD, true);
@@ -138,28 +149,37 @@ public class StudentInfo extends JDialog {
             JButton jb = new JButton(AppConstants.VERIFY);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
-
+            getRootPane().setDefaultButton(jb);
             jb.addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String[] info = new String[7];
-                    for (int i = 0; i < 7; i++)
+                    for (int i = 0; i < 7; i++) {                        
                         info[i] = tFields[i].getText();
+                    }
                     boolean isValid = true;
-                    if (Pattern.matches(AppConstants.REGEX_USERNAME, info[5]) == false) {
-                        tFields[5].setBackground(Color.PINK);
-                        isValid = false;
-                    } else
-                        tFields[5].setBackground(Color.WHITE);
-
-                    if (Pattern.matches(AppConstants.REGEX_PASSWORD, info[6]) == false) {
-                        tFields[6].setBackground(Color.PINK);
-                        isValid = false;
-                    } else
-                        tFields[6].setBackground(Color.WHITE);
-                    if (!isValid)
+                    for (int i = 0; i < 7; i++) {
+                        if (Pattern.matches(checkregex[i], info[i]) == false) {
+                            isValid = false;
+                            tFields[i].setBackground(Color.PINK);
+                        } else {
+                            tFields[i].setBackground(Color.WHITE);
+                        }
+                        if (checknull[i] && info[i].equals("")) {
+                            info[i] = null;
+                        }
+                    }
+                    if (!isValid) {
                         return;
-                    AdminDAO.getInstance().AddStudent(info);
+                    }
+                    try {
+                        AdminDAO.getInstance().AddStudent(info);
+                    } catch (StudentExistException e2) {
+                        JOptionPane.showMessageDialog(null, AppConstants.ADMIN_SNO_EXIST_ERROR,
+                                AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     dispose();
                     StudentInfo.this.genTable();
                 }
@@ -186,6 +206,8 @@ public class StudentInfo extends JDialog {
     }
 
     private class DelStudent extends JDialog {
+
+        private static final long serialVersionUID = 1L;
         private JPanel contPanel;
         private JTextField tField;
 
@@ -208,11 +230,28 @@ public class StudentInfo extends JDialog {
             JButton jb = new JButton(AppConstants.DELETE);
             panel.add(jb);
             contPanel.add(panel, BorderLayout.SOUTH);
-
+            getRootPane().setDefaultButton(jb);
             jb.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    AdminDAO.getInstance().DelStudent(tField.getText());
+                    String sno = tField.getText();
+                    if (Pattern.matches(AppConstants.REGEX_SNO, sno) == false) {
+                        tField.setBackground(Color.PINK);
+                        return;
+                    } else {
+                        tField.setBackground(Color.WHITE);
+                    }
+                    try {
+                        AdminDAO.getInstance().DelStudent(sno);
+                    } catch (StudentNotFoundException e1) {
+                        JOptionPane.showMessageDialog(null, AppConstants.ADMIN_SNO_NOTEXIST_ERROR,
+                                AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } catch (StudentSelectedCourseException e2) {
+                        JOptionPane.showMessageDialog(null, AppConstants.ADMIN_SELECTEDCOURSE_ERROR,
+                                AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                     dispose();
                     StudentInfo.this.genTable();
                 }
@@ -232,8 +271,4 @@ public class StudentInfo extends JDialog {
             contPanel.add(panel, BorderLayout.CENTER);
         }
     }
-    /*
-     * public static void main(String[] args) { new StudentInfo().setVisible(true);
-     * }
-     */
 }

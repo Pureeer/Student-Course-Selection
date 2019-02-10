@@ -21,7 +21,7 @@ public class AppConstants {
     public static final String LOGIN_PASSWORD = "密    码：";
     public static final String LOGIN_ERROR = "用户名或密码错误";
     public static final String REGEX_PASSWORD = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
-    public static final String REGEX_USERNAME = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$";
+    public static final String REGEX_USERNAME = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{4,16}$";
 
     // Student
     public static final String STUDENT_TITLE = "学生选课";
@@ -51,15 +51,17 @@ public class AppConstants {
 
     public static final String SCORE = "成绩";
 
+    public static final String ERROR = "错误";
     public static final String CNO_NULL_ERROR = "请输入课程号";
-    public static final String CNO_NOT_EXIST_ERROR = "课程号不存在";
-    public static final String CNO_SELECTED_ERROR = "此课程已选";
-    public static final String CNO_NOT_SELECTED_ERROR = "此课程未选";
-    public static final String CNO_GRADED_ERROR = "此课程已登分";
+    public static final String CNO_NOT_EXIST_ERROR = "课程号不存在！";
+    public static final String CNO_SELECTED_ERROR = "此课程已选！";
+    public static final String CNO_NOT_SELECTED_ERROR = "此课程未选！";
+    public static final String CNO_GRADED_ERROR = "此课程已登分！";
 
     public static final String VERIFY = "确认";
     public static final String DELETE = "删除";
-    public static final String TOTAL_COUNT = "记录总数:";
+    public static final String TOTAL_COUNT = "记录总数：";
+
     // Admin
     public static final String ADMIN_TITLE = "成绩管理";
     public static final String ADMIN_QUERY = "查询";
@@ -79,9 +81,26 @@ public class AppConstants {
     public static final String ADMIN_COURSEINFO_ADD = "新增课程";
     public static final String ADMIN_COURSEINFO_DEL = "删除课程";
     public static final String ADMIN_COURSEINFO_QUIT = "退出";
+    public static final String ADMIN_CNO_EXIST_ERROR = "不能添加，此课程号已存在！";
+    public static final String ADMIN_CNO_NOTEXIST_ERROR = "不能删除，此课程号不存在！";
+    public static final String ADMIN_COURSESELECTED_ERROR = "不能删除，此课程已有学生选！";
 
     public static final String ADMIN_SUTDENTINFO = "学生信息";
     public static final String ADMIN_SUTDENTINFO_ADD = "添加学生";
     public static final String ADMIN_SUTDENTINFO_DEL = "删除学生";
+    public static final String ADMIN_SNO_EXIST_ERROR = "不能添加，此学号已存在！";
+    public static final String ADMIN_SNO_NOTEXIST_ERROR = "不能删除，此学号不存在！";
+    public static final String ADMIN_SELECTEDCOURSE_ERROR = "不能刪除，此学生已选课！";
 
+    public static final String REGEX_SNO = "^[a-zA-Z0-9]{1,4}$";
+    public static final String REGEX_SNAME = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\\u4e00-\\u9fa5]{1,8}$";
+    public static final String REGEX_SEX = "^(男|女)?$";
+    public static final String REGEX_AGE = "^(\\d)*";
+    public static final String REGEX_SDEPT = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{0,10}$";
+
+    public static final String REGEX_CNO = "^[a-zA-Z0-9]{1,4}$";
+    public static final String REGEX_CNAME = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\\u4e00-\\u9fa5]{1,8}$";
+    public static final String REGEX_CREDIT = "^(\\d)*";
+    public static final String REGEX_CDEPT = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{0,10}$";
+    public static final String REGEX_TNAME = "^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{0,8}$";
 }

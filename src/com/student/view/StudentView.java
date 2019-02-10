@@ -20,9 +20,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import com.student.AppConstants;
+import com.student.base.BaseDAO.CourseNotFoundException;
+import com.student.base.BaseDAO.CourseNotSelectedException;
 import com.student.dao.StudentDAO;
-import com.student.dao.StudentDAO.CourseNotFoundException;
-import com.student.dao.StudentDAO.CourseNotSelectException;
 import com.student.model.Student;
 
 /**
@@ -36,11 +36,11 @@ public class StudentView extends JFrame {
     private JPanel contentPane;
     private Student student;
     private JTable infotable, coursetable, scoretable, selectedtable;
-    private static String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
+    private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
             AppConstants.AGE, AppConstants.SDEPT};
-    private static String[] coursecolumn = {AppConstants.CNO, AppConstants.CNAME,
+    private static final String[] coursecolumn = {AppConstants.CNO, AppConstants.CNAME,
             AppConstants.CREDIT, AppConstants.CDEPT, AppConstants.TNAME};
-    private static String[] scorecolumn =
+    private static final String[] scorecolumn =
             {AppConstants.CNO, AppConstants.CNAME, AppConstants.SCORE};
     private JTextField textField;
 
@@ -48,18 +48,17 @@ public class StudentView extends JFrame {
     public StudentView(Student student) {
         this.student = student;
         System.out.println("Student " + student.getSno() + " Login Success.");
-        
+
         setResizable(false);
         setTitle(AppConstants.STUDENT_TITLE);
         setSize(800, 400);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
 
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
                 System.out.println("Student " + student.getSno() + " Logout.");
-                dispose();
                 new LoginView();
             }
         });
@@ -86,10 +85,7 @@ public class StudentView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Student " + student.getSno() + " Logout.");
                 dispose();
-                new LoginView();
-
             }
         });
 
@@ -236,15 +232,18 @@ public class StudentView extends JFrame {
             }
             try {
                 StudentDAO.getInstance().queryCourseGrade(student.getSno(), cno);
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR);
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (CourseNotFoundException e2) {
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR);
-            } catch (CourseNotSelectException e2) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
+            } catch (CourseNotSelectedException e2) {
                 StudentDAO.getInstance().selectCourse(student.getSno(), cno);
                 updateTables();
                 System.out.println("Student " + student.getSno() + " selected course " + cno + ".");
             } catch (NumberFormatException e2) {
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR);
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (Exception e2) {
                 System.err.println("Unknown Error!");
             }
@@ -263,11 +262,14 @@ public class StudentView extends JFrame {
             }
             try {
                 StudentDAO.getInstance().queryCourseGrade(student.getSno(), cno);
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_GRADED_ERROR);
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_GRADED_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (CourseNotFoundException e2) {
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR);
-            } catch (CourseNotSelectException e2) {
-                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_SELECTED_ERROR);
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
+            } catch (CourseNotSelectedException e2) {
+                JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_SELECTED_ERROR,
+                        AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (NumberFormatException e2) {
                 StudentDAO.getInstance().dropCourse(student.getSno(), cno);
                 updateTables();
