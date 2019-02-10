@@ -89,6 +89,7 @@ public class AppConstants {
     public static final String ADMIN_SUTDENTINFO_ADD = "添加学生";
     public static final String ADMIN_SUTDENTINFO_DEL = "删除学生";
     public static final String ADMIN_SNO_EXIST_ERROR = "不能添加，此学号已存在！";
+    public static final String ADMIN_USER_EXIST_ERROR = "不能研究，此用戶已存在！";
     public static final String ADMIN_SNO_NOTEXIST_ERROR = "不能删除，此学号不存在！";
     public static final String ADMIN_SELECTEDCOURSE_ERROR = "不能刪除，此学生已选课！";
 

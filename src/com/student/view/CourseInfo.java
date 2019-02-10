@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import com.student.AppConstants;
 import com.student.base.BaseDAO.CourseExistException;
@@ -45,7 +44,7 @@ public class CourseInfo extends JDialog {
         setLocationRelativeTo(null);
         setSize(450, 300);
         setTitle(AppConstants.ADMIN_COURSEINFO);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         container = new JPanel();
         setContentPane(container);
@@ -142,7 +141,7 @@ public class CourseInfo extends JDialog {
             setResizable(false);
             setLocationRelativeTo(null);
             setSize(310, 260);
-            setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
             initBtn();
             initTable();
@@ -200,8 +199,8 @@ public class CourseInfo extends JDialog {
                 panels[i].setLayout(new GridLayout(1, 2, 5, 5));
                 labels[i] = new JLabel(infocolumn[i]);
                 tFields[i] = new JTextField(10);
-                panels[i].add(labels[i], JLabel.CENTER_ALIGNMENT);
-                panels[i].add(tFields[i], JLabel.CENTER_ALIGNMENT);
+                panels[i].add(labels[i], Component.CENTER_ALIGNMENT);
+                panels[i].add(tFields[i], Component.CENTER_ALIGNMENT);
                 panel.add(panels[i]);
             }
             contPanel.add(panel, BorderLayout.CENTER);
@@ -222,7 +221,7 @@ public class CourseInfo extends JDialog {
             setResizable(false);
             setLocationRelativeTo(null);
             setSize(280, 120);
-            setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
             initBtn();
             initTable();
@@ -268,8 +267,8 @@ public class CourseInfo extends JDialog {
             panel2.setLayout(new GridLayout(1, 2, 5, 5));
             JLabel label = new JLabel(AppConstants.CNO);
             tField = new JTextField(10);
-            panel2.add(label, JLabel.CENTER_ALIGNMENT);
-            panel2.add(tField, JLabel.LEFT_ALIGNMENT);
+            panel2.add(label, Component.CENTER_ALIGNMENT);
+            panel2.add(tField, Component.LEFT_ALIGNMENT);
             panel.add(panel2);
             contPanel.add(panel, BorderLayout.CENTER);
         }

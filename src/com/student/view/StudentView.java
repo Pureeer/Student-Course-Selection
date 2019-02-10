@@ -36,8 +36,8 @@ public class StudentView extends JFrame {
     private JPanel contentPane;
     private Student student;
     private JTable infotable, coursetable, scoretable, selectedtable;
-    private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME, AppConstants.SEX,
-            AppConstants.AGE, AppConstants.SDEPT};
+    private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SNAME,
+            AppConstants.SEX, AppConstants.AGE, AppConstants.SDEPT};
     private static final String[] coursecolumn = {AppConstants.CNO, AppConstants.CNAME,
             AppConstants.CREDIT, AppConstants.CDEPT, AppConstants.TNAME};
     private static final String[] scorecolumn =
@@ -234,17 +234,18 @@ public class StudentView extends JFrame {
                 StudentDAO.getInstance().queryCourseGrade(student.getSno(), cno);
                 JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR,
                         AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
-            } catch (CourseNotFoundException e2) {
+            } catch (CourseNotFoundException e1) {
                 JOptionPane.showMessageDialog(null, AppConstants.CNO_NOT_EXIST_ERROR,
                         AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (CourseNotSelectedException e2) {
                 StudentDAO.getInstance().selectCourse(student.getSno(), cno);
+                textField.setText(null);
                 updateTables();
                 System.out.println("Student " + student.getSno() + " selected course " + cno + ".");
-            } catch (NumberFormatException e2) {
+            } catch (NumberFormatException e3) {
                 JOptionPane.showMessageDialog(null, AppConstants.CNO_SELECTED_ERROR,
                         AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e2) {
+            } catch (Exception e4) {
                 System.err.println("Unknown Error!");
             }
         }
@@ -272,6 +273,7 @@ public class StudentView extends JFrame {
                         AppConstants.ERROR, JOptionPane.ERROR_MESSAGE);
             } catch (NumberFormatException e2) {
                 StudentDAO.getInstance().dropCourse(student.getSno(), cno);
+                textField.setText(null);
                 updateTables();
                 System.out.println("Student " + student.getSno() + " droped course " + cno + ".");
             } catch (Exception e2) {

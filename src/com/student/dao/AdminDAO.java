@@ -30,7 +30,7 @@ public class AdminDAO extends BaseDAO {
         return buildResult();
     }
 
-    /** 
+    /**
      *
      * @Description: get all courses.
      */
@@ -40,7 +40,7 @@ public class AdminDAO extends BaseDAO {
         return buildResult();
     }
 
-    /** 
+    /**
      *
      * @Description: get all students.
      */
@@ -51,7 +51,7 @@ public class AdminDAO extends BaseDAO {
     }
 
 
-    /** 
+    /**
      *
      * @Description: query the course for a student.
      */
@@ -72,9 +72,9 @@ public class AdminDAO extends BaseDAO {
         return db.executeUpdate(sql, prarm);
     }
 
-    /** 
+    /**
      *
-     * @throws CourseExistException 
+     * @throws CourseExistException
      * @Description: AddCourse
      */
     public void AddCourse(String[] prarm) throws CourseExistException {
@@ -86,10 +86,10 @@ public class AdminDAO extends BaseDAO {
         db.executeUpdate(sql, prarm);
     }
 
-    /** 
+    /**
      *
-     * @throws CourseNotFoundException 
-     * @throws CourseSelectedException 
+     * @throws CourseNotFoundException
+     * @throws CourseSelectedException
      * @Description: DelCourse
      */
     public void DelCourse(String cno) throws CourseNotFoundException, CourseSelectedException {
@@ -109,12 +109,17 @@ public class AdminDAO extends BaseDAO {
     /**
      *
      * @throws StudentExistException
+     * @throws UserExistException
      * @Description: AddStudent
      */
-    public void AddStudent(String[] prarm) throws StudentExistException {
+    public void AddStudent(String[] prarm) throws StudentExistException, UserExistException {
         if (queryStudent(prarm[0]).length != 0) {
             // check if the student exist
             throw new StudentExistException();
+        }
+        if (queryUser(prarm[6]).length != 0) {
+            // check if the username exist
+            throw new UserExistException();
         }
         String sql = "insert into student values(?,?,?,?,?,?,?)";
         prarm[6] = getSHA256(prarm[6] + prarm[5]);
@@ -122,7 +127,7 @@ public class AdminDAO extends BaseDAO {
 
     }
 
-    /** 
+    /**
      *
      * @throws StudentNotFoundException
      * @throws StudentSelectedCourseException

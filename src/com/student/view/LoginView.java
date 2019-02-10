@@ -118,8 +118,6 @@ public class LoginView extends JFrame {
                     JOptionPane.showMessageDialog(null, AppConstants.LOGIN_ERROR);
                 }
             } else {
-                System.out.println(username);
-                System.out.println(password);
                 String sno = StudentDAO.getInstance().queryForLogin(username, password + username);
                 if (sno != null) {
                     dispose();

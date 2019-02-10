@@ -70,6 +70,17 @@ public abstract class BaseDAO {
     }
 
     /**
+     *
+     * @Description: query a student by username.
+     */
+    public String[][] queryUser(String sno) {
+        String sql = "select * from student where username=?";
+        String[] param = {sno};
+        rs = db.executeQuery(sql, param);
+        return buildResult();
+    }
+
+    /**
      * 
      * @Description: query a course by cno.
      */
@@ -123,6 +134,12 @@ public abstract class BaseDAO {
 
     }
 
+    public class UserExistException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+    }
+
     public class StudentNotFoundException extends Exception {
 
         private static final long serialVersionUID = 1L;
@@ -140,11 +157,11 @@ public abstract class BaseDAO {
         private static final long serialVersionUID = 1L;
 
     }
-    
+
     public class CourseSelectedException extends Exception {
 
         private static final long serialVersionUID = 1L;
-        
+
     }
 
     public class CourseNotFoundException extends Exception {

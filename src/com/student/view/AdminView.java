@@ -50,6 +50,7 @@ public class AdminView extends JFrame {
     private JTable gradetable;
     private static final String[] infocolumn = {AppConstants.SNO, AppConstants.SCORE};
     private JButton querybtn;
+    private JToggleButton inputbtn;
     private JPanel choosebox;
 
     public AdminView() {
@@ -149,7 +150,6 @@ public class AdminView extends JFrame {
         course = new JComboBox<>();
         course.setPreferredSize(new Dimension(100, 20));
         choosebox.add(course);
-
         genChoice();
     }
 
@@ -161,7 +161,7 @@ public class AdminView extends JFrame {
         for (int i = 0; i < result.length; i++) {
             Course c = new Course(result[i][0]);
             c.setCname(result[i][1]);
-            try {                
+            try {
                 c.setCredit(Integer.parseInt(result[i][2]));
             } catch (NumberFormatException e) {
                 c.setCredit(0);
@@ -171,6 +171,8 @@ public class AdminView extends JFrame {
             courses.add(c);
             course.addItem(c.getCname());
         }
+        coursename.setText(null);
+        teachername.setText(null);
         course.setSelectedIndex(-1);
     }
 
@@ -202,9 +204,16 @@ public class AdminView extends JFrame {
 
         querybtn = new JButton(AppConstants.ADMIN_QUERY);
         querybtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JToggleButton inputbtn = new JToggleButton(AppConstants.ADMIN_INPUT);
+        inputbtn = new JToggleButton(AppConstants.ADMIN_INPUT);
         inputbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         inputbtn.setEnabled(false);
+        course.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputbtn.setEnabled(false);
+            }
+        });
         JButton exitbtn = new JButton(AppConstants.ADMIN_CLOSE);
         exitbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -350,7 +359,7 @@ public class AdminView extends JFrame {
                 com.setBackground(Color.WHITE);
             } else {
                 try {
-                    
+
                     int g = Integer.parseInt(grade);
                     if (g < 0 || g > 100)
                         com.setBackground(Color.PINK);
@@ -358,8 +367,8 @@ public class AdminView extends JFrame {
                         com.setBackground(Color.WHITE);
 
                 } catch (NumberFormatException e) {
-                        com.setBackground(Color.PINK);
-                }                
+                    com.setBackground(Color.PINK);
+                }
             }
             return com;
         }

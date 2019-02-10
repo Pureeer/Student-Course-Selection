@@ -21,7 +21,7 @@ public class StudentDAO extends BaseDAO {
 
     public String queryForLogin(String username, String password) {
         String result = null;
-        String sql = "select sno from student where binary username=? and binary password=?";
+        String sql = "select sno from student where username=? and password=?";
         String[] param = {username, getSHA256(password)};
         rs = db.executeQuery(sql, param);
         try {
@@ -59,7 +59,7 @@ public class StudentDAO extends BaseDAO {
         rs = db.executeQuery(sql, param);
         return buildResult();
     }
-    
+
     /**
      * 
      * @Description: query the grade of a specific student.
@@ -105,7 +105,9 @@ public class StudentDAO extends BaseDAO {
 
     /**
      *
-     * @Description: select course for a student.
+     * @Description: select course for a student.<br>
+     * (sno, cno) should be checked additionally! 
+     * @see #queryCourseGrade(String, String)
      */
     public void selectCourse(String sno, String cno) {
         String sql = "insert into stu_course values (?,?,null)";
@@ -116,6 +118,8 @@ public class StudentDAO extends BaseDAO {
     /**
      *
      * @Description: drop course for a student.
+     * (sno, cno) should be checked additionally! 
+     * @see #queryCourseGrade(String, String)
      */
     public void dropCourse(String sno, String cno) {
         String sql = "delete from stu_course where sno=? and cno=?";
